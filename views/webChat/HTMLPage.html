@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-latest.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            $(document).ready(function () {
+                var socket = io.connect();
+
+                socket.on('message', function(data) {
+                    var output ='';
+                    output += '<li>';
+                    output += '    <h3>' + data.name + '</h3>';
+                    output += '    <p>'  + data.message + '</p>';
+                    output += '    <p>'  + data.data + '</p>';
+                    output += '</li>';
+
+                    $(output).prependTo('#content');
+                });
+
+                $('button').click(function() {
+                    socket.emit('message', {name : $('#name').val(), message: $('#message').val(), data : new Date().toUTCString()});
+                                            
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Socket.io Chat</h1>
+        <p>Chat With Node.js</p>
+        <hr />
+        <input type="text" id="name" />
+        <input type="text" id="message" />
+        <button>Button</button>
+        <ul id="content">
+
+        </ul>
+    </body>
+</html>
